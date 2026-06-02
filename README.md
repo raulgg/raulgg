@@ -6,30 +6,7 @@ Most of my work happens somewhere between **product questions**, **interface det
 
 I've been doing this for **15+ years**, mostly in small teams where the useful thing is rarely just _"write the code"_, but understand what should exist, why it should exist, and how to make it real without making everything harder to maintain.
 
----
-
-## Product Engineering
-
-- I like working **close to the problem** before getting attached to a solution.
-- I care about software that explains **the product**, not just the framework.
-- I prefer **clear systems** over clever ones.
-- I try to leave codebases **easier to understand** than I found them.
-
-## AI-Assisted Work
-
-AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
-
-<p align="left">
-  <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="40" height="40" />
-  <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="40" height="40" />
-  <img src="./assets/stack/codex.svg" title="Codex" alt="Codex" width="40" height="40" />
-  <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="40" height="40" />
-  <img src="./assets/stack/openclaw.svg" title="OpenClaw" alt="OpenClaw" width="40" height="40" />
-</p>
-
----
-
-## Stack
+<sub><strong>Tools I use regularly</strong></sub>
 
 <p align="left">
   <img src="./assets/stack/typescript.svg" title="TypeScript" alt="TypeScript" width="40" height="40" />
@@ -68,4 +45,23 @@ AI is part of my everyday workflow. I use agents to **think faster**, **explore 
   <img src="./assets/stack/vitest.svg" title="Vitest" alt="Vitest" width="40" height="40" />
   <img src="./assets/stack/playwright.svg" title="Playwright" alt="Playwright" width="40" height="40" />
   <img src="./assets/stack/vim.svg" title="Vim" alt="Vim" width="40" height="40" />
+</p>
+
+## Product Engineering
+
+- I like working **close to the problem** before getting attached to a solution.
+- I care about software that explains **the product**, not just the framework.
+- I prefer **clear systems** over clever ones.
+- I try to leave codebases **easier to understand** than I found them.
+
+## AI-Assisted Engineering
+
+AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
+
+<p align="left">
+  <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="40" height="40" />
+  <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="40" height="40" />
+  <img src="./assets/stack/codex.svg" title="Codex" alt="Codex" width="40" height="40" />
+  <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="40" height="40" />
+  <img src="./assets/stack/openclaw.svg" title="OpenClaw" alt="OpenClaw" width="40" height="40" />
 </p>
