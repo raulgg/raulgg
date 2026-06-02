@@ -70,7 +70,13 @@ const TECH_STACK = [
   "openclaw",
 ];
 
-const SVGL_TITLE_OVERRIDES = new Map([["css", "CSS (New)"]]);
+const SVGL_TITLE_OVERRIDES = {
+  css: "CSS (New)",
+};
+
+const DEVICON_DARK_FILL_OVERRIDES = {
+  apollographql: "#ffffff",
+};
 
 const shouldSkipFileWrites = process.argv.includes("--dry-run");
 
@@ -155,10 +161,13 @@ async function getSourceSvgMarkup({
   });
 
   if (deviconSvgMarkup) {
+    const deviconDarkFill = DEVICON_DARK_FILL_OVERRIDES[stackIconSlug];
     return {
       defaultSvgMarkup: deviconSvgMarkup,
-      darkSvgMarkup: null,
-      sourceDescription: "devicon",
+      darkSvgMarkup: deviconDarkFill
+        ? replaceSvgFill({ svgMarkup: deviconSvgMarkup, fill: deviconDarkFill })
+        : null,
+      sourceDescription: deviconDarkFill ? "devicon light/dark" : "devicon",
     };
   }
 
@@ -193,12 +202,16 @@ async function getSvglSvgMarkup({ svglIcon }) {
   };
 }
 
+function replaceSvgFill({ svgMarkup, fill }) {
+  return svgMarkup.replace(/\bfill=(["'])#[0-9a-f]{3,8}\1/gi, `fill="${fill}"`);
+}
+
 function findMatchingSvglIcon({ stackIconSlug, svglIconCatalog }) {
   if (!stackIconSlug) {
     return null;
   }
 
-  const svglTitle = SVGL_TITLE_OVERRIDES.get(stackIconSlug) ?? stackIconSlug;
+  const svglTitle = SVGL_TITLE_OVERRIDES[stackIconSlug] ?? stackIconSlug;
   const normalizedStackIconSlug = normalizeForMatching({ text: svglTitle });
   return (
     svglIconCatalog.find(

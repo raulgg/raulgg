@@ -39,7 +39,11 @@ I've been building websites and application for 15+ years, mostly in small teams
   </picture>
   <img src="./assets/stack/npm.svg" title="npm" alt="npm" width="48" height="48" align="middle" />
   <img src="./assets/stack/graphql.svg" title="GraphQL" alt="GraphQL" width="48" height="48" align="middle" />
-  <img src="./assets/stack/apollographql.svg" title="Apollo GraphQL" alt="Apollo GraphQL" width="48" height="48" align="middle" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/stack/apollographql-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="./assets/stack/apollographql.svg" />
+    <img src="./assets/stack/apollographql.svg" title="Apollo GraphQL" alt="Apollo GraphQL" width="48" height="48" align="middle" />
+  </picture>
   <img src="./assets/stack/hasura.svg" title="Hasura" alt="Hasura" width="48" height="48" align="middle" />
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/stack/prisma-dark.svg" />
