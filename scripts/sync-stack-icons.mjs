@@ -1,0 +1,329 @@
+#!/usr/bin/env node
+
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const rootDir = path.resolve(__dirname, "..");
+const assetsDir = path.join(rootDir, "assets", "stack");
+
+const SVGL_API = "https://api.svgl.app";
+const DEVICON_CDN_BASE_URL =
+  "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+const REMOTE_ICON_FETCH_TIMEOUT_MS = 5000;
+
+const LOGO_SIZE = 40;
+const CANVAS_WIDTH = 48;
+const CANVAS_HEIGHT = 48;
+
+const TECH_STACK = [
+  "typescript",
+  "javascript",
+  "html5",
+  "css",
+  "react",
+  "solidjs",
+  "nextjs",
+  "astro",
+  "tailwindcss",
+  "arkui",
+  "materialui",
+  "figma",
+  "nodejs",
+  "bun",
+  "vite",
+  "pnpm",
+  "npm",
+  "graphql",
+  "apollographql",
+  "hasura",
+  "prisma",
+  "postgresql",
+  "neon",
+  "redis",
+  "mongodb",
+  "mysql",
+  "vercel",
+  "cloudflare",
+  "amazonwebservices",
+  "render",
+  "netlify",
+  "docker",
+  "resend",
+  "inngest",
+  "n8n",
+  "sentry",
+  "posthog",
+  "git",
+  "github",
+  "githubactions",
+  "vitest",
+  "playwright",
+  "linear",
+  "vim",
+  "cursor",
+  "opencode",
+  "codex",
+  "claude",
+  "openclaw",
+];
+
+const SVGL_TITLE_OVERRIDES = new Map([["css", "CSS (New)"]]);
+
+const shouldUseLocalSvgFiles = process.argv.includes("--local");
+const shouldSkipFileWrites = process.argv.includes("--dry-run");
+
+async function main({ shouldUseLocalSvgFiles, shouldSkipFileWrites }) {
+  await mkdir(assetsDir, { recursive: true });
+  const svglIconCatalog = shouldUseLocalSvgFiles
+    ? []
+    : await fetchSvglIconCatalog({});
+
+  const syncResults = [];
+  for (const stackIconSlug of TECH_STACK) {
+    const targetSvgFilePath = path.join(assetsDir, `${stackIconSlug}.svg`);
+    const [sourceSvgMarkup, sourceDescription] = shouldUseLocalSvgFiles
+      ? [await readFile(targetSvgFilePath, "utf8"), "local"]
+      : await getSourceSvgMarkup({
+          stackIconSlug,
+          localSvgFilePath: targetSvgFilePath,
+          svglIconCatalog,
+        });
+
+    const paddedSvgMarkup = addTransparentCanvasPaddingToSvg({
+      svgMarkup: sourceSvgMarkup,
+      stackIconSlug,
+    });
+
+    if (!shouldSkipFileWrites) {
+      await writeFile(targetSvgFilePath, `${paddedSvgMarkup}\n`);
+    }
+
+    syncResults.push(
+      `${shouldSkipFileWrites ? "checked" : "updated"} ${stackIconSlug}.svg (${sourceDescription})`,
+    );
+  }
+
+  console.log(syncResults.join("\n"));
+}
+
+async function fetchSvglIconCatalog({} = {}) {
+  const response = await fetch(SVGL_API);
+
+  if (!response.ok) {
+    throw new Error(`SVGL catalog fetch failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+async function getSourceSvgMarkup({
+  stackIconSlug,
+  localSvgFilePath,
+  svglIconCatalog,
+}) {
+  const matchingSvglIcon = findMatchingSvglIcon({
+    stackIconSlug,
+    svglIconCatalog,
+  });
+
+  if (matchingSvglIcon) {
+    return [
+      await fetchSvgMarkup({
+        svgUrl: selectPreferredSvgRoute({ svglIcon: matchingSvglIcon }),
+      }),
+      "svgl",
+    ];
+  }
+
+  const deviconSvgMarkup = await fetchDeviconSvgMarkup({
+    stackIconSlug,
+  });
+
+  if (deviconSvgMarkup) {
+    return [deviconSvgMarkup, "devicon"];
+  }
+
+  return [await readFile(localSvgFilePath, "utf8"), "local fallback"];
+}
+
+function findMatchingSvglIcon({ stackIconSlug, svglIconCatalog }) {
+  if (!stackIconSlug) {
+    return null;
+  }
+
+  const svglTitle = SVGL_TITLE_OVERRIDES.get(stackIconSlug) ?? stackIconSlug;
+  const normalizedStackIconSlug = normalizeForMatching({ text: svglTitle });
+  return (
+    svglIconCatalog.find(
+      (svglIcon) =>
+        normalizeForMatching({ text: svglIcon.title }) ===
+        normalizedStackIconSlug,
+    ) ??
+    svglIconCatalog.find((svglIcon) =>
+      normalizeForMatching({ text: svglIcon.title }).includes(
+        normalizedStackIconSlug,
+      ),
+    ) ??
+    null
+  );
+}
+
+function selectPreferredSvgRoute({ svglIcon }) {
+  if (typeof svglIcon.route === "string") {
+    return svglIcon.route;
+  }
+
+  if (svglIcon.route?.light) {
+    return svglIcon.route.light;
+  }
+
+  if (svglIcon.route?.dark) {
+    return svglIcon.route.dark;
+  }
+
+  throw new Error(`No route found for ${svglIcon.title}`);
+}
+
+async function fetchSvgMarkup({ svgUrl }) {
+  const response = await fetch(svgUrl);
+
+  if (!response.ok) {
+    throw new Error(`SVG download failed for ${svgUrl}: ${response.status}`);
+  }
+
+  return response.text();
+}
+
+async function fetchDeviconSvgMarkup({ stackIconSlug }) {
+  const deviconSvgUrl = `${DEVICON_CDN_BASE_URL}/${stackIconSlug}/${stackIconSlug}-original.svg`;
+
+  try {
+    const response = await fetch(deviconSvgUrl, {
+      signal: AbortSignal.timeout(REMOTE_ICON_FETCH_TIMEOUT_MS),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const svgMarkup = await response.text();
+    if (!svgMarkup.trim().startsWith("<svg")) {
+      return null;
+    }
+
+    return svgMarkup;
+  } catch {
+    return null;
+  }
+}
+
+function addTransparentCanvasPaddingToSvg({ svgMarkup, stackIconSlug }) {
+  const trimmedSvgMarkup = svgMarkup.trim();
+  if (hasTransparentCanvasPadding({ svgMarkup: trimmedSvgMarkup })) {
+    return trimmedSvgMarkup;
+  }
+
+  const svgMarkupWithoutXmlProlog = trimmedSvgMarkup.replace(
+    /^<\?xml[^>]*>\s*/i,
+    "",
+  );
+  const rootSvgStartIndex = svgMarkupWithoutXmlProlog.search(/<svg\b/i);
+  const rootSvgEndIndex = svgMarkupWithoutXmlProlog
+    .toLowerCase()
+    .lastIndexOf("</svg>");
+
+  if (rootSvgStartIndex === -1 || rootSvgEndIndex === -1) {
+    throw new Error(`Could not parse root <svg> for ${stackIconSlug}`);
+  }
+
+  const rootSvgMarkup = svgMarkupWithoutXmlProlog.slice(
+    rootSvgStartIndex,
+    rootSvgEndIndex + "</svg>".length,
+  );
+  const rootSvgMatch = rootSvgMarkup.match(/^<svg\b([^>]*)>([\s\S]*)<\/svg>$/i);
+
+  if (!rootSvgMatch) {
+    throw new Error(`Could not parse root <svg> for ${stackIconSlug}`);
+  }
+
+  const innerSvgAttributes = normalizeInnerSvgAttributes({
+    rawSvgAttributes: rootSvgMatch[1],
+    stackIconSlug,
+  });
+  const innerSvgMarkup = rootSvgMatch[2].trim();
+
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${CANVAS_WIDTH}" height="${CANVAS_HEIGHT}" viewBox="0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}">`,
+    `  <svg${innerSvgAttributes} x="0" y="0" width="${LOGO_SIZE}" height="${LOGO_SIZE}">`,
+    indentMultilineText({ text: innerSvgMarkup, spaces: 4 }),
+    "  </svg>",
+    "</svg>",
+  ].join("\n");
+}
+
+function hasTransparentCanvasPadding({ svgMarkup }) {
+  return (
+    /<svg\b[^>]*\bwidth=["']48["'][^>]*\bheight=["']48["'][^>]*\bviewBox=["']0 0 48 48["']/i.test(
+      svgMarkup,
+    ) &&
+    /<svg\b[^>]*\bx=["']0["'][^>]*\by=["']0["'][^>]*\bwidth=["']40["'][^>]*\bheight=["']40["']/i.test(
+      svgMarkup,
+    )
+  );
+}
+
+function normalizeInnerSvgAttributes({ rawSvgAttributes, stackIconSlug }) {
+  let normalizedSvgAttributes = rawSvgAttributes
+    .replace(/\s(width|height|x|y)="[^"]*"/gi, "")
+    .replace(/\s(width|height|x|y)='[^']*'/gi, "")
+    .trim();
+
+  if (!/\bviewBox=/i.test(normalizedSvgAttributes)) {
+    const viewBox = extractViewBoxFromSvgDimensions({
+      rawSvgAttributes,
+    });
+    if (!viewBox) {
+      throw new Error(
+        `No viewBox or numeric width/height found for ${stackIconSlug}`,
+      );
+    }
+    normalizedSvgAttributes =
+      `${normalizedSvgAttributes} viewBox="${viewBox}"`.trim();
+  }
+
+  if (!/\bpreserveAspectRatio=/i.test(normalizedSvgAttributes)) {
+    normalizedSvgAttributes = `${normalizedSvgAttributes} preserveAspectRatio="xMidYMid meet"`;
+  }
+
+  return normalizedSvgAttributes ? ` ${normalizedSvgAttributes}` : "";
+}
+
+function extractViewBoxFromSvgDimensions({ rawSvgAttributes }) {
+  const svgWidth = rawSvgAttributes.match(/\bwidth=["']?([0-9.]+)/i)?.[1];
+  const svgHeight = rawSvgAttributes.match(/\bheight=["']?([0-9.]+)/i)?.[1];
+
+  if (!svgWidth || !svgHeight) {
+    return null;
+  }
+
+  return `0 0 ${svgWidth} ${svgHeight}`;
+}
+
+function indentMultilineText({ text, spaces }) {
+  const pad = " ".repeat(spaces);
+  return text
+    .split("\n")
+    .map((line) => `${pad}${line}`)
+    .join("\n");
+}
+
+function normalizeForMatching({ text }) {
+  return text.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+main({ shouldUseLocalSvgFiles, shouldSkipFileWrites }).catch((error) => {
+  console.error(error.message);
+  process.exit(1);
+});
