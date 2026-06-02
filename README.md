@@ -45,6 +45,7 @@ I've been building websites and application for 15+ years, mostly in small teams
   <img src="./assets/stack/inngest.svg" title="Inngest" alt="Inngest" width="40" height="40" align="middle" />
   <img src="./assets/stack/n8n.svg" title="n8n" alt="n8n" width="40" height="40" align="middle" />
   <img src="./assets/stack/sentry.svg" title="Sentry" alt="Sentry" width="40" height="40" align="middle" />
+  <img src="./assets/stack/posthog.svg" title="PostHog" alt="PostHog" width="40" height="40" align="middle" />
   <img src="./assets/stack/git.svg" title="Git" alt="Git" width="40" height="40" align="middle" />
   <img src="./assets/stack/github.svg" title="GitHub" alt="GitHub" width="40" height="40" align="middle" />
   <img src="./assets/stack/githubactions.svg" title="GitHub Actions" alt="GitHub Actions" width="40" height="40" align="middle" />
@@ -67,8 +68,8 @@ AI is part of my everyday workflow. I use agents to **think faster**, **explore 
 
 <p align="left">
   <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="40" height="40" align="middle" />
+  <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="40" height="40" align="middle" />
   <img src="./assets/stack/codex.svg" title="Codex" alt="Codex" width="40" height="40" align="middle" />
   <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="40" height="40" align="middle" />
-  <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="40" height="40" align="middle" />
   <img src="./assets/stack/openclaw.svg" title="OpenClaw" alt="OpenClaw" width="40" height="40" align="middle" />
 </p>
