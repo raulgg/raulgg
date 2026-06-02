@@ -1,8 +1,6 @@
-# Hi, I'm Raul
+# Hi, I'm Raul 👋
 
-I build web products and the systems around them.
-
-I like turning messy product problems into simple, maintainable software.
+I build web products and the systems around them, turning messy product problems into simple, maintainable software.
 
 Most of my work happens somewhere between product questions, interface details, backend behavior, and the small technical decisions that make software easier to change later.
 
