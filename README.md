@@ -6,6 +6,8 @@ Most of my work happens somewhere between **product questions**, **interface det
 
 I've been doing this for **15+ years**, mostly in small teams where the useful thing is rarely just _"write the code"_, but understand what should exist, why it should exist, and how to make it real without making everything harder to maintain.
 
+**Stack**
+
 <p align="left">
   <img src="./assets/stack/typescript.svg" title="TypeScript" alt="TypeScript" width="40" height="40" />
   <img src="./assets/stack/javascript.svg" title="JavaScript" alt="JavaScript" width="40" height="40" />
@@ -55,6 +57,8 @@ I've been doing this for **15+ years**, mostly in small teams where the useful t
 ## AI-Assisted Engineering
 
 AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
+
+**Preferred harnesses**
 
 <p align="left">
   <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="40" height="40" />
