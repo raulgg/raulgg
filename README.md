@@ -1,24 +1,23 @@
 # Hi, I'm Raul
 
-Full-stack product engineer. I like turning messy product problems into simple, maintainable software.
+I build web products and the systems around them.
 
-I've spent 15+ years building web products in small teams, close to users, product questions, and the tradeoffs behind shipping well.
+I like turning messy product problems into simple, maintainable software.
 
-## How I Think
+Most of my work happens somewhere between product questions, interface details, backend behavior, and the small technical decisions that make software easier to change later.
 
-- I care more about clear systems than clever ones.
-- I like software that explains the product, not just the framework.
-- I'm interested in where product judgment, engineering discipline, and AI-assisted workflows meet.
+I've been doing this for 15+ years, mostly in small teams where the useful thing is rarely just "write the code", but understand what should exist, why it should exist, and how to make it real without making everything harder to maintain.
 
-## How I Build
+## Product Engineering
 
-- I prefer small teams, direct feedback, and tight iteration loops.
-- I use product discovery to reduce uncertainty before adding complexity.
-- I try to leave systems easier to understand than I found them.
+- I like working close to the problem before getting attached to a solution.
+- I care about software that explains the product, not just the framework.
+- I prefer clear systems over clever ones.
+- I try to leave codebases easier to understand than I found them.
 
-## AI-Assisted Engineering
+## AI-Assisted Work
 
-AI is part of my everyday workflow, mostly as a way to think faster, explore alternatives, and tighten implementation while keeping quality standards high.
+AI is part of my everyday workflow. I use agents to think faster, explore alternatives, review assumptions, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
 
 ## Stack
 
