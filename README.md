@@ -31,6 +31,7 @@ I've been building websites and application for 15+ years, mostly in small teams
   <img src="./assets/stack/hasura.svg" title="Hasura" alt="Hasura" width="40" height="40" align="middle" />
   <img src="./assets/stack/prisma.svg" title="Prisma" alt="Prisma" width="40" height="40" align="middle" />
   <img src="./assets/stack/postgresql.svg" title="PostgreSQL" alt="PostgreSQL" width="40" height="40" align="middle" />
+  <img src="./assets/stack/neon.svg" title="Neon" alt="Neon" width="40" height="40" align="middle" />
   <img src="./assets/stack/mongodb.svg" title="MongoDB" alt="MongoDB" width="40" height="40" align="middle" />
   <img src="./assets/stack/mysql.svg" title="MySQL" alt="MySQL" width="40" height="40" align="middle" />
   <img src="./assets/stack/redis.svg" title="Redis" alt="Redis" width="40" height="40" align="middle" />
