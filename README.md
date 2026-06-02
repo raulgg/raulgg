@@ -57,9 +57,9 @@ I've been doing this for **15+ years**, mostly in small teams where the useful t
 AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
 
 <p align="left">
-  <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="40" height="40" />
   <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="40" height="40" />
   <img src="./assets/stack/codex.svg" title="Codex" alt="Codex" width="40" height="40" />
+  <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="40" height="40" />
   <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="40" height="40" />
   <img src="./assets/stack/openclaw.svg" title="OpenClaw" alt="OpenClaw" width="40" height="40" />
 </p>
