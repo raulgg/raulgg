@@ -19,7 +19,4 @@ AI is part of my everyday workflow. I use agents to think faster, explore altern
 
 ## Stack
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Stack](https://skillicons.dev/icons?i=typescript,javascript,html,css,nodejs,bun,npm,pnpm,react,nextjs,solidjs,astro,tailwindcss,materialui,figma,graphql,apollo,postgresql,mongodb,mysql,aws,vercel,netlify,cloudflare,docker,nginx,git,github,bitbucket,vitest,neovim&perline=8)
