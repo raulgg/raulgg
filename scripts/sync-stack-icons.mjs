@@ -14,6 +14,7 @@ const DEVICON_CDN_BASE_URL =
 const REMOTE_ICON_FETCH_TIMEOUT_MS = 5000;
 
 const LOGO_SIZE = 40;
+const LOGO_PADDING = 4;
 const CANVAS_WIDTH = 48;
 const CANVAS_HEIGHT = 48;
 
@@ -71,30 +72,29 @@ const TECH_STACK = [
 
 const SVGL_TITLE_OVERRIDES = new Map([["css", "CSS (New)"]]);
 
-const shouldUseLocalSvgFiles = process.argv.includes("--local");
 const shouldSkipFileWrites = process.argv.includes("--dry-run");
 
-async function main({ shouldUseLocalSvgFiles, shouldSkipFileWrites }) {
+async function main({ shouldSkipFileWrites }) {
   await mkdir(assetsDir, { recursive: true });
-  const svglIconCatalog = shouldUseLocalSvgFiles
-    ? []
-    : await fetchSvglIconCatalog({});
+  const svglIconCatalog = await fetchSvglIconCatalog({});
 
   const syncResults = [];
   for (const stackIconSlug of TECH_STACK) {
     const targetSvgFilePath = path.join(assetsDir, `${stackIconSlug}.svg`);
-    const [sourceSvgMarkup, sourceDescription] = shouldUseLocalSvgFiles
-      ? [await readFile(targetSvgFilePath, "utf8"), "local"]
-      : await getSourceSvgMarkup({
-          stackIconSlug,
-          localSvgFilePath: targetSvgFilePath,
-          svglIconCatalog,
-        });
-
-    const paddedSvgMarkup = addTransparentCanvasPaddingToSvg({
-      svgMarkup: sourceSvgMarkup,
+    const [sourceSvgMarkup, sourceDescription] = await getSourceSvgMarkup({
       stackIconSlug,
+      localSvgFilePath: targetSvgFilePath,
+      svglIconCatalog,
     });
+
+    const paddedSvgMarkup = hasCurrentCanvasPadding({
+      svgMarkup: sourceSvgMarkup,
+    })
+      ? sourceSvgMarkup.trim()
+      : addTransparentCanvasPaddingToSvg({
+          svgMarkup: sourceSvgMarkup,
+          stackIconSlug,
+        });
 
     if (!shouldSkipFileWrites) {
       await writeFile(targetSvgFilePath, `${paddedSvgMarkup}\n`);
@@ -220,12 +220,7 @@ async function fetchDeviconSvgMarkup({ stackIconSlug }) {
 }
 
 function addTransparentCanvasPaddingToSvg({ svgMarkup, stackIconSlug }) {
-  const trimmedSvgMarkup = svgMarkup.trim();
-  if (hasTransparentCanvasPadding({ svgMarkup: trimmedSvgMarkup })) {
-    return trimmedSvgMarkup;
-  }
-
-  const svgMarkupWithoutXmlProlog = trimmedSvgMarkup.replace(
+  const svgMarkupWithoutXmlProlog = svgMarkup.trim().replace(
     /^<\?xml[^>]*>\s*/i,
     "",
   );
@@ -256,19 +251,19 @@ function addTransparentCanvasPaddingToSvg({ svgMarkup, stackIconSlug }) {
 
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${CANVAS_WIDTH}" height="${CANVAS_HEIGHT}" viewBox="0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}">`,
-    `  <svg${innerSvgAttributes} x="0" y="0" width="${LOGO_SIZE}" height="${LOGO_SIZE}">`,
+    `  <svg${innerSvgAttributes} x="${LOGO_PADDING}" y="${LOGO_PADDING}" width="${LOGO_SIZE}" height="${LOGO_SIZE}">`,
     indentMultilineText({ text: innerSvgMarkup, spaces: 4 }),
     "  </svg>",
     "</svg>",
   ].join("\n");
 }
 
-function hasTransparentCanvasPadding({ svgMarkup }) {
+function hasCurrentCanvasPadding({ svgMarkup }) {
   return (
     /<svg\b[^>]*\bwidth=["']48["'][^>]*\bheight=["']48["'][^>]*\bviewBox=["']0 0 48 48["']/i.test(
       svgMarkup,
     ) &&
-    /<svg\b[^>]*\bx=["']0["'][^>]*\by=["']0["'][^>]*\bwidth=["']40["'][^>]*\bheight=["']40["']/i.test(
+    /<svg\b[^>]*\bx=["']4["'][^>]*\by=["']4["'][^>]*\bwidth=["']40["'][^>]*\bheight=["']40["']/i.test(
       svgMarkup,
     )
   );
@@ -323,7 +318,7 @@ function normalizeForMatching({ text }) {
   return text.toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-main({ shouldUseLocalSvgFiles, shouldSkipFileWrites }).catch((error) => {
+main({ shouldSkipFileWrites }).catch((error) => {
   console.error(error.message);
   process.exit(1);
 });
