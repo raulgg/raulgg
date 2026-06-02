@@ -81,27 +81,43 @@ async function main({ shouldSkipFileWrites }) {
   const syncResults = [];
   for (const stackIconSlug of TECH_STACK) {
     const targetSvgFilePath = path.join(assetsDir, `${stackIconSlug}.svg`);
-    const [sourceSvgMarkup, sourceDescription] = await getSourceSvgMarkup({
+    const {
+      defaultSvgMarkup,
+      darkSvgMarkup,
+      sourceDescription,
+    } = await getSourceSvgMarkup({
       stackIconSlug,
       localSvgFilePath: targetSvgFilePath,
       svglIconCatalog,
     });
 
     const paddedSvgMarkup = hasCurrentCanvasPadding({
-      svgMarkup: sourceSvgMarkup,
+      svgMarkup: defaultSvgMarkup,
     })
-      ? sourceSvgMarkup.trim()
+      ? defaultSvgMarkup.trim()
       : addTransparentCanvasPaddingToSvg({
-          svgMarkup: sourceSvgMarkup,
+          svgMarkup: defaultSvgMarkup,
           stackIconSlug,
         });
+    const paddedDarkSvgMarkup = darkSvgMarkup
+      ? addTransparentCanvasPaddingToSvg({
+          svgMarkup: darkSvgMarkup,
+          stackIconSlug,
+        })
+      : null;
 
     if (!shouldSkipFileWrites) {
       await writeFile(targetSvgFilePath, `${paddedSvgMarkup}\n`);
+      if (paddedDarkSvgMarkup) {
+        await writeFile(
+          path.join(assetsDir, `${stackIconSlug}-dark.svg`),
+          `${paddedDarkSvgMarkup}\n`,
+        );
+      }
     }
 
     syncResults.push(
-      `${shouldSkipFileWrites ? "checked" : "updated"} ${stackIconSlug}.svg (${sourceDescription})`,
+      `${shouldSkipFileWrites ? "checked" : "updated"} ${stackIconSlug}.svg${paddedDarkSvgMarkup ? ` + ${stackIconSlug}-dark.svg` : ""} (${sourceDescription})`,
     );
   }
 
@@ -129,12 +145,9 @@ async function getSourceSvgMarkup({
   });
 
   if (matchingSvglIcon) {
-    return [
-      await fetchSvgMarkup({
-        svgUrl: selectPreferredSvgRoute({ svglIcon: matchingSvglIcon }),
-      }),
-      "svgl",
-    ];
+    return getSvglSvgMarkup({
+      svglIcon: matchingSvglIcon,
+    });
   }
 
   const deviconSvgMarkup = await fetchDeviconSvgMarkup({
@@ -142,10 +155,42 @@ async function getSourceSvgMarkup({
   });
 
   if (deviconSvgMarkup) {
-    return [deviconSvgMarkup, "devicon"];
+    return {
+      defaultSvgMarkup: deviconSvgMarkup,
+      darkSvgMarkup: null,
+      sourceDescription: "devicon",
+    };
   }
 
-  return [await readFile(localSvgFilePath, "utf8"), "local fallback"];
+  return {
+    defaultSvgMarkup: await readFile(localSvgFilePath, "utf8"),
+    darkSvgMarkup: null,
+    sourceDescription: "local fallback",
+  };
+}
+
+async function getSvglSvgMarkup({ svglIcon }) {
+  if (typeof svglIcon.route === "string") {
+    return {
+      defaultSvgMarkup: await fetchSvgMarkup({ svgUrl: svglIcon.route }),
+      darkSvgMarkup: null,
+      sourceDescription: "svgl",
+    };
+  }
+
+  const defaultSvgUrl = svglIcon.route?.light ?? svglIcon.route?.dark;
+  if (!defaultSvgUrl) {
+    throw new Error(`No route found for ${svglIcon.title}`);
+  }
+
+  return {
+    defaultSvgMarkup: await fetchSvgMarkup({ svgUrl: defaultSvgUrl }),
+    darkSvgMarkup: svglIcon.route?.dark
+      ? await fetchSvgMarkup({ svgUrl: svglIcon.route.dark })
+      : null,
+    sourceDescription:
+      svglIcon.route?.light && svglIcon.route?.dark ? "svgl light/dark" : "svgl",
+  };
 }
 
 function findMatchingSvglIcon({ stackIconSlug, svglIconCatalog }) {
@@ -168,22 +213,6 @@ function findMatchingSvglIcon({ stackIconSlug, svglIconCatalog }) {
     ) ??
     null
   );
-}
-
-function selectPreferredSvgRoute({ svglIcon }) {
-  if (typeof svglIcon.route === "string") {
-    return svglIcon.route;
-  }
-
-  if (svglIcon.route?.light) {
-    return svglIcon.route.light;
-  }
-
-  if (svglIcon.route?.dark) {
-    return svglIcon.route.dark;
-  }
-
-  throw new Error(`No route found for ${svglIcon.title}`);
 }
 
 async function fetchSvgMarkup({ svgUrl }) {

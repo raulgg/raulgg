@@ -12,6 +12,8 @@ The script updates `assets/stack/*.svg` for every entry in `TECH_STACK`.
 
 To add a new stack item, add its icon slug to the `TECH_STACK` constant in `sync-stack-icons.mjs`, then run the sync command.
 
+If SVGL provides both light and dark routes for an icon, the script also generates a `*-dark.svg` variant. Reference those icons in `README.md` with a `<picture>` element so GitHub can switch images based on the active color scheme.
+
 Source order:
 
 1. SVGL
