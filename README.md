@@ -178,7 +178,7 @@ I've been building websites and application for 15+ years, mostly in small teams
 
 ## AI-Assisted Engineering
 
-AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and tighten implementation, while keeping product context, taste, and quality judgment in the loop.
+AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and **tighten implementation**, while keeping my product context, taste, and quality judgment in the loop.
 
 <p align="left">
   <picture>
