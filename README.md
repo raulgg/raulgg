@@ -182,24 +182,7 @@ AI is part of my everyday workflow. I use agents to **think faster**, **explore 
 
 <p align="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/stack/cursor-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/stack/cursor.svg" />
-    <img src="./assets/stack/cursor.svg" title="Cursor" alt="Cursor" width="48" height="48" align="middle" />
-  </picture>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/stack/opencode-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/stack/opencode.svg" />
-    <img src="./assets/stack/opencode.svg" title="OpenCode" alt="OpenCode" width="48" height="48" align="middle" />
-  </picture>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/stack/codex-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/stack/codex.svg" />
-    <img src="./assets/stack/codex.svg" title="Codex" alt="Codex" width="48" height="48" align="middle" />
-  </picture>
-  <picture>
-    <img src="./assets/stack/claude.svg" title="Claude" alt="Claude" width="48" height="48" align="middle" />
-  </picture>
-  <picture>
-    <img src="./assets/stack/openclaw.svg" title="OpenClaw" alt="OpenClaw" width="48" height="48" align="middle" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://readme-stack-icons.vercel.app/icons?icons=cursor%2Copencode%2Ccodex%2Cclaude%2Copenclaw&amp;columns=5&amp;gap=8&amp;theme=dark" />
+    <img src="https://readme-stack-icons.vercel.app/icons?icons=cursor%2Copencode%2Ccodex%2Cclaude%2Copenclaw&amp;columns=5&amp;gap=8&amp;theme=light" title="Cursor, OpenCode, Codex, Claude, OpenClaw" alt="Cursor, OpenCode, Codex, Claude, OpenClaw" width="232" height="40" />
   </picture>
 </p>
