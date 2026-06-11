@@ -6,7 +6,7 @@ Most of my work happens somewhere between **product questions**, **interface det
 
 I've been building websites and application for 15+ years, mostly in small teams where the useful thing is rarely just _"write the code"_, but rather understanding what should exist, why it should exist, and how to make it real without making everything harder to maintain.
 
-#### Stack
+**Stack**
 
 <p align="left">
   <picture>
