@@ -37,7 +37,7 @@ AI is part of my everyday workflow. I use agents to **think faster**, **explore 
 
 <p align="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://stackicons.dev/icons?s=codex%2Ccursor%2Cgrok%2Copencode%2Cclaude%2Copenclaw&amp;columns=5&amp;gap=8&amp;theme=dark" />
-    <img src="https://stackicons.dev/icons?s=codex%2Ccursor%2Cgrok%2Copencode%2Cclaude%2Copenclaw&amp;columns=5&amp;gap=8&amp;theme=light" title="Codex, Cursor, Grok, OpenCode, Claude, OpenClaw" alt="Codex, Cursor, Grok, OpenCode, Claude, OpenClaw" width="232" height="40" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://stackicons.dev/icons?s=codex%2Ccursor%2Cgrok%2Copencode%2Cclaude%2Copenclaw&amp;columns=6&amp;gap=8&amp;theme=dark" />
+    <img src="https://stackicons.dev/icons?s=codex%2Ccursor%2Cgrok%2Copencode%2Cclaude%2Copenclaw&amp;columns=6&amp;gap=8&amp;theme=light" title="Codex, Cursor, Grok, OpenCode, Claude, OpenClaw" alt="Codex, Cursor, Grok, OpenCode, Claude, OpenClaw" width="232" height="40" />
   </picture>
 </p>
