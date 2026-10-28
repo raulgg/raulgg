@@ -31,9 +31,9 @@ I've been building websites and applications for 15+ years, mostly in small team
 - I prefer **clear systems** over clever ones.
 - I try to leave codebases **easier to understand** than I found them.
 
-## AI-Assisted Engineering
+## Agentic Engineering
 
-AI is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and **tighten implementation**, while keeping my product context, taste, and quality judgment in the loop.
+Artificial Intelligence is part of my everyday workflow. I use agents to **think faster**, **explore alternatives**, **review assumptions**, and **tighten implementation**, while I own the product decisions, set the quality bar, and review everything that ships.
 
 <p align="left">
   <picture>
